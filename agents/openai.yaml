@@ -1,0 +1,7 @@
+interface:
+  display_name: "章鱼保罗"
+  short_description: "足球赛前情报与娱乐比分预测"
+  default_prompt: "Use $paul-the-octopus to predict Mexico vs South Africa for the 2026 World Cup opener."
+
+policy:
+  allow_implicit_invocation: true
