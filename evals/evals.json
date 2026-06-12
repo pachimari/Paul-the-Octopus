@@ -4,16 +4,17 @@
     {
       "id": 0,
       "prompt": "请用章鱼保罗预测 2026 世界杯开幕战：墨西哥 vs 南非。先联网给赛前情报和 Paul-chartroom 专家席提名，专家要有背景信息，等我确认后再开会。",
-      "expected_output": "A first-stage chat-friendly response that locks the match, cites current sources through a source index, summarizes pre-match intelligence without a large table, proposes 3-5 Paul-chartroom experts with background and task assignment, and waits for user confirmation before predicting.",
+      "expected_output": "A first-stage chat-friendly response that locks the match, cites current sources through a source index, closes core roster/team-news facts as far as public sources allow, summarizes pre-match intelligence without a large table, proposes 3-5 Paul-chartroom experts with background and task assignment, and waits for user confirmation before predicting.",
       "files": [],
       "expectations": [
-        "联网核验遵守快筛模式，默认控制在两轮搜索和 4-6 个高价值来源内。",
-        "使用证据矩阵填空；赛程、名单/可用阵容、伤停/停赛、更衣室快筛、状态/交锋和环境/变量覆盖后立即停止搜索。",
-        "第一段赛前情报应遵守 2-4 分钟目标和 5 分钟硬停止线；到线后用情报缺口呈现未填项。",
+        "联网核验遵守准确性优先模式，不因固定搜索轮数、来源数或时间限制放弃基础事实。",
+        "使用证据矩阵填空；赛程、完整/最新名单状态、确认或预测首发、伤停/停赛、赛前发布会/team news、更衣室快筛、状态/交锋和环境/变量尽量闭环。",
+        "不能把页面过长、搜索未返回、访问失败或未获取写成情报缺口；应换可靠来源补齐，或写清官方/主流来源尚未发布。",
         "用聊天框友好的核心 6 行赛前情报和精简来源索引呈现，不使用大表格或长篇网页摘要。",
-        "覆盖赛程、名单、伤停、更衣室、状态/交锋和环境/变量。",
+        "覆盖赛程、名单/首发、伤停/发布会、更衣室、状态/交锋和环境/变量。",
+        "如果最终 26 人名单尚未官方公布，应引用最新官方征召、近期名单或权威预测作为替代依据，而不是只写未公布。",
         "更衣室矛盾只做可靠源快筛，不为了证明没有矛盾而持续搜索。",
-        "不抓取、不分析、不输出任何竞猜交易类网站内容。",
+        "不抓取、不分析、不输出任何竞猜交易类网站内容，也不把正确比分赔率未找到写成缺口。",
         "提出 3-5 位 Paul-chartroom 专家，每位都有背景信息、本轮任务、选择理由和缺失视角。",
         "明确声明专家会议是基于公开方法论的模拟分析席，不代表本人实时观点。",
         "停在专家确认环节，提示用户回复开始或调整专家，不直接输出最终比分。"
@@ -27,7 +28,7 @@
       "expectations": [
         "输出 Paul-chartroom 专家结果，且每位专家都有背景、核心判断、质疑前提和比分/胜平负倾向。",
         "专家发言保持简洁，不展开成长报告。",
-        "会议整理包含共识、分歧、被排除的信息和还缺的信息，且整体简短。",
+        "会议整理包含共识、分歧、被排除的信息和待确认信息，且整体简短。",
         "章鱼保罗判断包含轻松拟人的保罗动作、最可能比分、备选比分、胜平负倾向、信心等级和关键变量。",
         "不输出任何竞猜交易类抓取说明。",
         "包含仅供娱乐、不构成投注建议的声明。"
@@ -47,15 +48,28 @@
     {
       "id": 3,
       "prompt": "同一场墨西哥 vs 南非，刚才你已经查过赛程和名单了。现在只刷新最新伤停、赛前发布会和赛地环境，再继续给第一段情报和专家席。",
-      "expected_output": "A refresh-style first-stage response that reuses stable match facts from the prior turn, refreshes only volatile injury/team-news/press-conference/environment facts, keeps sources compact, and avoids repeating a full research crawl.",
+      "expected_output": "A refresh-style first-stage response that reuses stable match facts from the prior turn when they were complete, repairs incomplete roster or baseline facts before reuse, refreshes volatile injury/team-news/press-conference/environment facts, keeps output compact, and avoids repeating unnecessary research.",
       "files": [],
       "expectations": [
-        "复用同一轮对话内已经核验的赛程、地点、历史交锋和名单，不重新泛搜。",
+        "复用同一轮对话内已经核验且完整的赛程、地点、历史交锋和名单；如果上一轮名单或基础事实不完整，必须先补齐。",
         "只刷新伤停、首发、赛前发布会和赛地环境等易变信息。",
-        "刷新式请求不应重跑完整证据矩阵，目标应明显快于首次抓取。",
+        "刷新式请求不应重跑已经闭环的完整证据矩阵，但不能复用不完整事实。",
         "来源索引控制在 3-5 个真正用上的来源内。",
         "不抓取、不分析、不输出任何竞猜交易类网站内容。",
         "仍然输出核心 6 行赛前情报和 Paul-chartroom 专家席提名。"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "请用章鱼保罗预测美国 vs 加拿大，不要出现大名单没抓全、Wikipedia 页面过长被截断、两队首发预测未获取、正确比分赔率未找到这种缺口。",
+      "expected_output": "A first-stage response that treats roster completeness and predicted-lineup status as core facts, repairs long-page or search-failure issues by using alternative reliable sources, excludes odds from the evidence matrix, and only lists public-source-not-yet-published items as pending.",
+      "files": [],
+      "expectations": [
+        "不能输出“完整名单未获取”“页面过长被截断”“搜索未返回”“首发预测未获取”等工具失败式缺口。",
+        "必须用官方名单、赛事名单页、国家队公告或权威媒体/数据源说明两队最终名单、最新征召名单或权威预测名单状态。",
+        "必须尝试查证确认或预测首发；如果主流预测首发尚未发布，写明来源状态和替代依据。",
+        "正确比分赔率、盘口和交易类信息必须排除，不能列入来源、证据矩阵或待确认信息。",
+        "待确认信息只允许包含官方或主流来源确实尚未发布的内容，例如临场首发、发布会或临场天气更新。"
       ]
     }
   ]
