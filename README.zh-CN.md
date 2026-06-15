@@ -11,9 +11,10 @@
 ## 能做什么
 
 - 预测一场明确的足球比赛比分。
-- 用 6 行压缩赛前情报：赛程、名单、伤停、更衣室、状态/交锋、环境/变量。
+- 用 6 行压缩赛前情报；杯赛小组赛等场景会追加第 7 行赛事形势。
 - 用短来源索引承载关键证据，避免长篇网页摘要。
 - 在最终判断前，推荐 3-5 位足球专家或分析师组成模拟 `Paul-chartroom` 专家席。
+- 当运行环境提供 Agent tool / sub-agent 能力时，每位专家必须使用独立子代理；否则必须明说本轮是单模型降级。
 - 区分已核验事实、低可信传闻、模拟专家观点和章鱼保罗最终判断。
 - 输出最可能比分、1-2 个备选比分、胜平负倾向、信心等级和关键变量。
 
@@ -30,7 +31,7 @@
 
 ```bash
 cd ~/.codex/skills
-git clone https://github.com/Hchen1218/Paul-the-Octopus.git paul-the-octopus
+git clone https://github.com/pachimari/Paul-the-Octopus.git paul-the-octopus
 ```
 
 然后用 `$paul-the-octopus` 调用，或直接提出足球比分预测请求。
@@ -53,7 +54,7 @@ git clone https://github.com/Hchen1218/Paul-the-Octopus.git paul-the-octopus
 
 1. 锁定比赛：球队、赛事、日期、地点、阶段和开球背景。
 2. 用紧凑搜索核验公开信息。
-3. 建立 6 行赛前情报。
+3. 建立 6 行赛前情报；必要时追加赛事形势。
 4. 根据本场比赛的判断盲区，提名 3-5 位 `Paul-chartroom` 专家席。
 5. 等待用户确认或调整专家。
 6. 先输出专家结果，再输出章鱼保罗比分判断和娱乐声明。
@@ -79,7 +80,7 @@ git clone https://github.com/Hchen1218/Paul-the-Octopus.git paul-the-octopus
 
 - `SKILL.md`：运行入口、触发条件和主工作流。
 - `references/source-policy.md`：来源优先级、搜索预算和禁止来源类型。
-- `references/paul-chartroom.md`：专家席选择、会议格式和章鱼保罗最终判断规则。
+- `references/paul-chartroom.md`：专家席选择、子代理执行合同、会议格式和章鱼保罗最终判断规则。
 - `references/report-template.md`：两段式聊天输出模板。
 - `evals/evals.json`：基础行为验收用例。
 
@@ -92,6 +93,7 @@ git clone https://github.com/Hchen1218/Paul-the-Octopus.git paul-the-octopus
 - 明确区分已核验事实、低可信传闻、模拟专家分析和章鱼保罗最终判断。
 - 除非用户已经要求直接继续，否则第一段停在专家席提名。
 - 先输出专家结果，再输出章鱼保罗最终比分。
+- 运行环境支持子代理时必须真开独立专家 Agent；不支持时必须明确说明降级。
 - 包含娱乐声明，且不提供投注建议。
 
 ## License

@@ -11,9 +11,10 @@ Use it before World Cup matches, continental tournaments, national-team fixtures
 ## What It Does
 
 - Predicts the score for a clearly identified football match.
-- Summarizes the pre-match situation in six compact lines: fixture, squad, injuries, dressing room, form/head-to-head, and environment.
+- Summarizes the pre-match situation in six compact lines, with an optional seventh tournament-context line for cup group stages.
 - Uses a short source index instead of long article summaries.
 - Proposes 3-5 football experts or analysts as a simulated `Paul-chartroom` panel before the final call.
+- Uses one independent sub-agent per expert when the runtime provides Agent tool / sub-agent capability; otherwise it must disclose the single-model fallback.
 - Separates facts, rumors, simulated expert views, and Paul's final judgment.
 - Returns the most likely score, 1-2 alternative scores, match-result lean, confidence level, and key swing variable.
 
@@ -30,7 +31,7 @@ Place this repository in your local skills directory:
 
 ```bash
 cd ~/.codex/skills
-git clone https://github.com/Hchen1218/Paul-the-Octopus.git paul-the-octopus
+git clone https://github.com/pachimari/Paul-the-Octopus.git paul-the-octopus
 ```
 
 Then invoke it with `$paul-the-octopus`, or ask for a football score prediction directly.
@@ -53,7 +54,7 @@ For the same match, reuse the fixture and squad facts we already checked. Only r
 
 1. Lock the match: teams, competition, date, venue, phase, and kickoff context.
 2. Verify public information with a compact search pass.
-3. Build the six-line pre-match intelligence brief.
+3. Build the six-line pre-match intelligence brief, plus tournament context when relevant.
 4. Nominate a 3-5 person `Paul-chartroom` panel based on the blind spots in this match.
 5. Wait for the user to confirm or adjust the panel.
 6. Give the expert results first, then Paul's score prediction and entertainment disclaimer.
@@ -79,7 +80,7 @@ For the same match, reuse the fixture and squad facts we already checked. Only r
 
 - `SKILL.md`: entry point, trigger rules, and main workflow.
 - `references/source-policy.md`: source priority, search budget, and prohibited source types.
-- `references/paul-chartroom.md`: panel selection, meeting format, and Paul's final judgment rules.
+- `references/paul-chartroom.md`: panel selection, sub-agent execution contract, meeting format, and Paul's final judgment rules.
 - `references/report-template.md`: two-stage chat output template.
 - `evals/evals.json`: baseline behavior checks.
 
@@ -92,6 +93,7 @@ Every prediction should:
 - Clearly distinguish verified facts, weak rumors, simulated expert analysis, and Paul's final call.
 - Stop the first response at panel nomination unless the user has already asked to proceed directly.
 - Put expert results before Paul's final score prediction.
+- Use real independent expert agents when the runtime supports them, or explicitly disclose the fallback.
 - Include the entertainment disclaimer and avoid betting advice.
 
 ## License
